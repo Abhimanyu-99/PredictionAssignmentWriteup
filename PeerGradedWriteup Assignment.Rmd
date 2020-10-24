@@ -13,14 +13,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introduction and Backgroud Info
 
-Using devices such as Jawbone Up, Nike FuelBand, and Fitbit it is now possible to collect a large amount of data about personal activity relatively inexpensively. These type of devices are part of the quantified self movement – a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behavior, or because they are tech geeks. One thing that people regularly do is quantify how much of a particular activity they do, but they rarely quantify how well they do it. In this project, your goal will be to use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants. They were asked to perform barbell lifts correctly and incorrectly in 5 different ways. More information is available from the website here: <http://web.archive.org/web/20161224072740/http:/groupware.les.inf.puc-rio.br/har>
+To predict the manner in which the people did their exercise using data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants.
 
 ## Data
 
-Can't find the training data? In got you. Check out the below link for Training Data of the project
 <https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv>
 
-Same case with Testing data too? No worries. Check out the link for Testing data of the project.
 <https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv>
 
 ## Understanding Data
@@ -52,7 +50,7 @@ library(Amelia)
 
 ### Splitting training set into testing and training sets
 ```{r}
-set.seed(12345)
+set.seed(7060)
 data_sample<-sample.split(trainingData$classe,SplitRatio = 0.8)
 trainSet<-subset(trainingData,data_sample==TRUE)
 testSet<-subset(trainingData,data_sample==FALSE)
@@ -63,9 +61,9 @@ dim(testSet)
 
 ### Removing variables with Nearly Zero Variance
 ```{r}
-near0 <- nearZeroVar(trainingData)
-trainSet <- trainSet[, -near0]
-testSet  <- testSet[, -near0]
+nzv <- nearZeroVar(trainingData)
+trainSet <- trainSet[, -nzv]
+testSet  <- testSet[, -nzv]
 dim(trainSet)
 dim(testSet)
 # Checking the missing value percentage
@@ -99,7 +97,7 @@ missmap(trainSet)
 ```
 
 
-We should note that there is Absolutely no Missing Data in our Training Set. Hence we can confidently go ahead with creating the prediction model but before that we check the correlation between variables to help predict with correct Independent variables.
+We should make sure that there is no missing data.
 
 ### Checking the Null Hypothesis
 
